@@ -1,0 +1,8 @@
+# Netlify builds the site automatically on every push to main.
+# The Firebase keys (VITE_FIREBASE_*) are set in Netlify → Site configuration → Environment variables.
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "24"
