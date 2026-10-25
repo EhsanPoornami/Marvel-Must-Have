@@ -10,7 +10,17 @@ interface Props {
   onEdit: (v: Volume) => void
 }
 
-const ownedRing = (owned: boolean) => (owned ? 'ring-2 ring-emerald-500/70' : 'ring-1 ring-line')
+/** Compact rating, e.g. "★ 4"; nothing when the volume isn't rated. */
+function RatingBadge({ voto, className = '' }: { voto?: number; className?: string }) {
+  if (!voto) return null
+  return (
+    <span className={`text-xs font-bold whitespace-nowrap text-caption ${className}`} title={`Il mio voto: ${voto}/5`} aria-label={`Voto ${voto} su 5`}>
+      ★ {voto}
+    </span>
+  )
+}
+
+const ownedRing =(owned: boolean) => (owned ? 'ring-2 ring-emerald-500/70' : 'ring-1 ring-line')
 
 /** Grid card: tap opens the details, where the volume can be added to a list. */
 export function VolumeCard({ volume, onEdit }: Props) {
@@ -40,10 +50,13 @@ export function VolumeCard({ volume, onEdit }: Props) {
             <StatusBadge status={entry.stato} />
           </div>
           <p className="line-clamp-2 min-h-[2.5em] text-xs leading-tight font-medium text-neutral-100">{volume.titolo}</p>
-          <p className="text-[11px] text-neutral-500">
-            {formatEuro(volume.prezzo)}
-            {volume.daVerificare && <span className="text-amber-300/80" title="Alcuni dati sono da verificare"> · da verificare</span>}
-          </p>
+          <div className="flex items-center justify-between gap-1">
+            <p className="text-[11px] text-neutral-500">
+              {formatEuro(volume.prezzo)}
+              {volume.daVerificare && <span className="text-amber-300/80" title="Alcuni dati sono da verificare"> · da verificare</span>}
+            </p>
+            <RatingBadge voto={entry.voto} />
+          </div>
         </div>
       </button>
       {owned && (
@@ -80,6 +93,7 @@ export function VolumeRow({ volume, onEdit }: Props) {
             {volume.daVerificare && <span className="text-amber-300"> · da verificare</span>}
           </span>
         </span>
+        <RatingBadge voto={entry.voto} className="shrink-0" />
         <span className="hidden w-16 shrink-0 text-right text-xs text-neutral-400 sm:block">{formatEuro(volume.prezzo)}</span>
         <StatusBadge status={entry.stato} className="shrink-0" />
       </button>
