@@ -37,6 +37,32 @@ function CharacterPanel({ portrait, className = '' }: { portrait: Portrait; clas
   )
 }
 
+/** Five clickable stars; clicking the current rating clears it. */
+function StarRating({ value, onChange }: { value: number; onChange: (v: number) => void }) {
+  const [hover, setHover] = useState(0)
+  const shown = hover || value
+  return (
+    <div className="flex items-center gap-1" role="radiogroup" aria-label="Voto" onMouseLeave={() => setHover(0)}>
+      {[1, 2, 3, 4, 5].map((n) => (
+        <button
+          key={n}
+          type="button"
+          role="radio"
+          aria-checked={value === n}
+          aria-label={`${n} ${n === 1 ? 'stella' : 'stelle'}`}
+          title={value === n ? 'Togli il voto' : `${n} su 5`}
+          onClick={() => onChange(value === n ? 0 : n)}
+          onMouseEnter={() => setHover(n)}
+          className={`cursor-pointer text-3xl leading-none transition-transform hover:scale-125 ${n <= shown ? 'text-caption' : 'text-neutral-600'}`}
+        >
+          ★
+        </button>
+      ))}
+      <span className="ml-2 text-xs text-neutral-400">{value ? `${value}/5` : 'Nessun voto'}</span>
+    </div>
+  )
+}
+
 function Field({ label, children, className = '' }: { label: string; children: ReactNode; className?: string }) {
   return (
     <label className={`block ${className}`}>
@@ -57,6 +83,7 @@ export function VolumeModal({ volume, onClose }: Props) {
   const [prezzoPagato, setPrezzoPagato] = useState(entry.prezzoPagato?.toString().replace('.', ',') ?? '')
   const [dataAcquisto, setDataAcquisto] = useState(entry.dataAcquisto ?? '')
   const [notePersonali, setNotePersonali] = useState(entry.notePersonali ?? '')
+  const [voto, setVoto] = useState(entry.voto ?? 0)
 
   // Catalog fields
   const [editingCatalog, setEditingCatalog] = useState(isNew)
@@ -118,6 +145,7 @@ export function VolumeModal({ volume, onClose }: Props) {
       prezzoPagato: parseEuro(prezzoPagato),
       dataAcquisto: dataAcquisto || undefined,
       notePersonali: notePersonali.trim() || undefined,
+      voto: voto || undefined,
     })
     showToast(isNew ? 'Volume aggiunto' : 'Modifiche salvate')
     onClose()
@@ -184,6 +212,10 @@ export function VolumeModal({ volume, onClose }: Props) {
 
           <section className="space-y-3">
             <h3 className="font-display text-sm tracking-wide text-neutral-300 uppercase">La mia copia</h3>
+            <div>
+              <span className="label">Il mio voto</span>
+              <StarRating value={voto} onChange={setVoto} />
+            </div>
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
               {STATUSES.map((s) => (
                 <button

@@ -34,6 +34,8 @@ export interface CollectionEntry {
   /** "YYYY-MM-DD" */
   dataAcquisto?: string
   notePersonali?: string
+  /** Personal rating, 1–5 stars. */
+  voto?: number
 }
 
 /** Collection entries keyed by volume id. Volumes without an entry count as "mancante". */

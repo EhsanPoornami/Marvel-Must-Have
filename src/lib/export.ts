@@ -72,14 +72,14 @@ const csvCell = (v: string | number | null | undefined): string => {
 export function buildCsv(volumes: Volume[], collection: Collection): string {
   const header = [
     'Numero', 'Titolo', 'Trama', 'Personaggi', 'Sceneggiatura', 'Disegni', 'Data uscita', 'Prezzo copertina', 'ISBN',
-    'Stato', 'Condizioni', 'Prezzo pagato', 'Data acquisto', 'Note personali', 'Note volume', 'Da verificare',
+    'Stato', 'Condizioni', 'Prezzo pagato', 'Data acquisto', 'Voto', 'Note personali', 'Note volume', 'Da verificare',
   ]
   const rows = volumes.map((v) => {
     const e = entryOf(collection, v.id)
     return [
       v.numero, v.titolo, v.trama, v.personaggi.join(', '), v.sceneggiatura.join(', '), v.disegni.join(', '), v.dataUscita,
       v.prezzo, v.isbn, STATUS_LABELS[e.stato], e.condizioni ? CONDITION_LABELS[e.condizioni] : '', e.prezzoPagato,
-      e.dataAcquisto ? formatDate(e.dataAcquisto) : '', e.notePersonali, v.note, v.daVerificare ? 'sì' : '',
+      e.dataAcquisto ? formatDate(e.dataAcquisto) : '', e.voto, e.notePersonali, v.note, v.daVerificare ? 'sì' : '',
     ].map(csvCell).join(';')
   })
   return '﻿' + [header.join(';'), ...rows].join('\r\n')

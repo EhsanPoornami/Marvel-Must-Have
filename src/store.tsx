@@ -48,7 +48,7 @@ const StoreContext = createContext<Store | null>(null)
 
 /** A plain "mancante" with no details is the default state: it isn't stored. */
 const isEmptyEntry = (e: CollectionEntry) =>
-  e.stato === 'mancante' && !e.condizioni && e.prezzoPagato === undefined && !e.dataAcquisto && !e.notePersonali
+  e.stato === 'mancante' && !e.condizioni && e.prezzoPagato === undefined && !e.dataAcquisto && !e.notePersonali && !e.voto
 
 const migratedKey = (uid: string) => `mmh.migrated.${uid}`
 
