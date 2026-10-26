@@ -2,13 +2,14 @@ import type { ReactNode } from 'react'
 import { firebaseEnabled } from '../lib/firebase'
 import { useStore } from '../store'
 
-export type Route = 'dashboard' | 'catalogo' | 'mancanti' | 'backup' | 'account'
+export type Route = 'dashboard' | 'catalogo' | 'mancanti' | 'backup' | 'contatti' | 'account'
 
 const NAV: { route: Route; label: string; icon: ReactNode }[] = [
   { route: 'dashboard', label: 'Dashboard', icon: <path d="M3 13h8V3H3v10Zm0 8h8v-6H3v6Zm10 0h8V11h-8v10Zm0-18v6h8V3h-8Z" /> },
   { route: 'catalogo', label: 'Collezione', icon: <path d="M4 3h7v8H4V3Zm9 0h7v8h-7V3ZM4 13h7v8H4v-8Zm9 0h7v8h-7v-8Z" /> },
   { route: 'mancanti', label: 'Mi mancano', icon: <path d="M4 5h16v2H4V5Zm0 6h16v2H4v-2Zm0 6h10v2H4v-2Z" /> },
   { route: 'backup', label: 'Backup', icon: <path d="M12 3 7 8h3v6h4V8h3l-5-5ZM5 17v2h14v-2H5Z" /> },
+  { route: 'contatti', label: 'Contatti', icon: <path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm0 4-8 5-8-5V6l8 5 8-5v2Z" /> },
 ]
 
 export function Layout({ route, children }: { route: Route; children: ReactNode }) {
@@ -61,7 +62,7 @@ export function Layout({ route, children }: { route: Route; children: ReactNode 
       <main key={route} className="mmh-page mx-auto max-w-6xl px-3 py-4 sm:px-4 sm:py-6">{children}</main>
 
       {/* Bottom tab bar on phones */}
-      <nav className="fixed inset-x-0 bottom-0 z-30 grid grid-cols-4 border-t border-line bg-ink/95 pb-[env(safe-area-inset-bottom)] backdrop-blur sm:hidden">
+      <nav className="fixed inset-x-0 bottom-0 z-30 grid grid-cols-5 border-t border-line bg-ink/95 pb-[env(safe-area-inset-bottom)] backdrop-blur sm:hidden">
         {NAV.map((n) => (
           <a key={n.route} href={`#/${n.route}`} className={`mmh-tab flex flex-col items-center gap-0.5 py-2 text-[11px] font-semibold ${route === n.route ? 'text-marvel' : 'text-neutral-400'}`}>
             <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor" aria-hidden="true">{n.icon}</svg>

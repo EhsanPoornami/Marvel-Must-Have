@@ -4,12 +4,13 @@ import { VolumeModal } from './components/VolumeModal'
 import { AccountPage } from './pages/AccountPage'
 import { BackupPage } from './pages/BackupPage'
 import { CatalogPage } from './pages/CatalogPage'
+import { ContactsPage } from './pages/ContactsPage'
 import { DashboardPage } from './pages/DashboardPage'
 import { MissingPage } from './pages/MissingPage'
 import { useStore } from './store'
 import type { Volume } from './types'
 
-const ROUTES: Route[] = ['dashboard', 'catalogo', 'mancanti', 'backup', 'account']
+const ROUTES: Route[] = ['dashboard', 'catalogo', 'mancanti', 'backup', 'contatti', 'account']
 
 function readRoute(): Route {
   const r = window.location.hash.replace(/^#\/?/, '') as Route
@@ -49,6 +50,7 @@ export default function App() {
       catalogo: <CatalogPage onOpen={openVolume} onNew={() => setModal('new')} />,
       mancanti: <MissingPage onOpen={openVolume} />,
       backup: <BackupPage />,
+      contatti: <ContactsPage />,
       account: <AccountPage />,
     }[route]
   }
